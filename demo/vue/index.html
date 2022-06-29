@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计算属性与监听器</title>
+    <script src="./vue.js"></script>
+    <!-- 避免页面出现抖屏 -->
+</head>
+<body>
+    <div id="root">
+        姓：<input v-model="firstName" />
+        名：<input v-model="lastName" />
+        <div>{{fullName}}</div>
+        <div>{{count}}</div>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#root", // 绑定页面对应的dom元素
+            data: { // 存放数据 
+                firstName: '',
+                lastName: '',
+                count: 0
+            },
+            computed: {
+                fullName: function() {
+                    return this.firstName + ' ' + this.lastName
+                }
+            },
+            watch: {
+                fullName: function() {
+                    this.count ++
+                }
+            }
+        })
+    </script>
+</body>
+</html>

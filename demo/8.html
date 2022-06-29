@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>性能优化</title>
+  <script src="defer1.js" charset="UTF-8" defer></script>
+  <script src="defer2.js" charset="UTF-8" defer></script>
+</head>
+<body>
+  <div class="">
+    test
+    <script type="text/javascript">
+      document.write('<span>write</span>')
+    </script>
+    <script>
+      for (var i = 0; i < 200000; i++){
+        if(i%20000 === 0) {
+          console.log(i)
+        }
+      }
+    </script>
+    <!-- 错误捕获
+      try..catch
+      window.onerror => window.addEventListener('error', function(e){
+        console.log(e)
+      }, true) 事件捕获
+      Object.error
+      performance.getEntries() 获得已经加载的资源返回的是数组
+      js跨域 错误可以捕获吗
+      1.在script标签增加crossorigin属性
+        在设置js资源响应头Access-Control-Allow-Origin:*或者请求路径
+        
+    -->
+    
+    <script>
+      (new Image()).src = 'http://baidu.com/tess?r=sss';
+    </script>
+  </div>
+</body>
+</html>
