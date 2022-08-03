@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+  <script>
+    //  v-bind="params"/
+    // params: {
+    //   num: 123,
+    //   a: 456,
+    //   b: 678
+    // }     
+    // 属性传的时候，使用content-abc这种命名接的时候 使用contentAbc
+    // 单项数据流的概念 子组件无法改父组件的值 只能使用
+    const app = Vue.createApp({
+      data() {
+        return {
+            num: 123,
+            a: 1
+        }
+      },
+      template: `
+        <div>
+          <test :content-abc="num"/>
+          <counter :count="a" />
+        </div>
+      `
+    })
+    app.component('counter', {
+      props: ['count'],
+      data() {
+        return {
+          myCount: this.count,
+        }
+      },
+      template: `<div @click="myCount += 1">{{myCount}}</div>`
+    })
+    app.component('test', {
+      props: ['contentAbc'],
+      template: `<div>{{contentAbc}}</div>`
+    })
+    const vm = app.mount('#root')
+  </script>
+</html>

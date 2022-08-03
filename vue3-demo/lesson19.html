@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+  <script>
+    // <test v-model="count" :num="num" @change-num="handleNumChange"/>
+    const app = Vue.createApp({
+      data() {
+        return {
+          count: 'a',
+          num: 1
+        }
+      },
+      // methods: {
+      //   handleNumChange(num) {
+      //     this.num = num
+      //   }
+      // },
+      template: `
+          <test v-model.uppercase="count"/>
+      `
+    })
+    app.component('test', {
+      props: {
+        'modelValue': String,
+        'modelModifiers': {
+          default: ()=> ({})
+        }
+      },
+      methods: {
+        handleClick() {
+          let newValue = this.modelValue + 'b'
+          if (this.modelModifiers.uppercase) {
+            newValue = newValue.toUpperCase()
+          }
+          this.$emit('update:modelValue', newValue)
+        },
+      //   handleClick1() {
+      //     this.$emit('update:num', this.num + 4)
+      //   }       
+      },
+      template: `
+      <div @click="handleClick">{{modelValue}}</div>
+      `
+    })
+    const vm = app.mount('#root')
+  </script>
+</html>

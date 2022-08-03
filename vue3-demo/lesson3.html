@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+<script>
+  const app = Vue.createApp({
+    data() {
+      return {
+        list: [],
+        inputValue: ''
+      } 
+    },
+    methods: {
+      handleAddItem() {
+        this.list.push(this.inputValue)
+        this.inputValue = ''
+      }
+    },
+    template: ` 
+      <div>
+        <input v-model="inputValue" />
+        <ul>
+          <button 
+            v-on:click="handleAddItem"
+            v-bind:title="inputValue"
+          >
+            增加
+          </button>
+          <todo-item 
+            v-for="(item, index) of list" 
+            v-bind:content="item"
+            v-bind:index="index"
+          >
+          </todo-item>
+        </li>
+      </div>
+    `
+  })
+  app.component('todo-item', {
+    // data() {
+    //   return {
+    //     item: "hello world"
+    //   }
+    // },
+    props: ['content', 'index'],
+    template: '<div>{{index}}--{{content}}</div>'
+  })
+  app.mount("#root")
+</script>
+</html>

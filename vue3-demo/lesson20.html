@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          text: '提交'
+        }
+      },
+      template: `
+        <my-form>
+          <div>{{text}}</div>
+        </my-form>
+        <my-form>
+          <button>{{text}}</button>
+        </my-form>
+        <my-form>
+        </my-form>
+      `
+    })
+    app.component('test', {
+      template: '<div>2222</div>'
+    })
+    app.component('myForm', {
+      methods: {
+        handleClick() {
+          alert(123)
+        }
+      },
+      template: `
+        <div>
+          <input />
+          <span @click="handleClick">
+            <slot>default value</slot>
+          </span>
+        </div>`
+    })
+    const vm = app.mount('#root')
+  </script>
+</html>

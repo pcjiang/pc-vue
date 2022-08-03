@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+<script>
+  // render function
+  // template -> render -> h -> 虚拟dom{JS 对象} -》真实dom -》展示到页面
+  const app = Vue.createApp({
+    data() {
+      return {
+        level: 3
+      }
+    },
+    methods: {
+    },
+    template: `
+      <my-title 
+        :level="level"
+      >
+        hello 124
+      </my-title>
+    `
+  })
+  app.component('my-title', {
+    props: ['level'],
+    render() {
+      const { h } = Vue
+      // 虚拟DOM
+      return h('h' + this.level, {name:'123456'}, this.$slots.default())
+    },
+    // template: `
+    //   <h1 v-if="level === 1"><slot /></h1>
+    //   <h2 v-if="level === 2"><slot /></h2>
+    //   <h3 v-if="level === 3"><slot /></h3>
+    // `
+  })
+  const vm = app.mount('#root')
+</script>
+</html>

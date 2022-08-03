@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+<script>
+  // 关于list 操作的内容进行封装
+  const listRelativeEffect = () => {
+    const { reactive } = Vue
+    const list = reactive([])
+    const addItemToList = (item) => {
+      list.push(item)
+    }
+    return { list, addItemToList}
+  }
+  // 关于inputValue 操作的内容进行封装
+  const inputRelativeEffect = () => {
+    const { ref } = Vue
+    const inputValue = ref()
+    const handleInputValueChange = (e) => {
+      inputValue.value = e.target.value
+    }
+    return {
+      inputValue,
+      handleInputValueChange
+    }
+  }
+  // 防抖节流 限制函数的执行频此
+  // 防抖 高频事件 n秒内只执行一次，n秒内再次触发，则重新计算 缺点一直触发，函数就一直延迟
+  // 节流 高频事件 每隔n秒执行一次 触发事件后判断有没有未执行的延时函数 有就return掉
+  const app = Vue.createApp({
+    setup() {
+      // const { ref, reactive } = Vue
+      // const inputValue = ref()
+      // const list = reactive([])
+      // const handleInputValueChange = (e) => {
+      //   inputValue.value = e.target.value
+      // }
+      // const handleSubmit = () => {
+      //   list.push(inputValue.value)
+      //   inputValue.value = ''
+      // }
+      // return {
+      //   inputValue,
+      //   list,
+      //   handleInputValueChange,
+      //   handleSubmit
+      // }
+      const { inputValue, handleInputValueChange } = inputRelativeEffect()
+      const { list, addItemToList } = listRelativeEffect()
+      return {
+        list,
+        addItemToList,
+        inputValue,
+        handleInputValueChange
+      }
+    },
+    template: `
+      <div>
+        <div>
+          <input 
+            :value="inputValue"
+            @input="handleInputValueChange" 
+            v-focus 
+          />
+          <button @click="() => addItemToList(inputValue)">提交</button>
+        </div>
+        <ul>
+          <li 
+            v-for="(item, index ) in list" 
+            :key="index"
+          >
+            {{item}}
+          </li>
+        </ul>
+      </div>
+    `
+  })
+  app.directive('focus', {
+    mounted(el) {
+      el.focus()
+    }
+  })
+  const vm = app.mount("#root")
+</script>
+
+</html>

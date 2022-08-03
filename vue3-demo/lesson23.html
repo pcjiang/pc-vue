@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+  <script>
+    // v-once 让某个元素只渲染一次
+    // ref 获取节点用的/ 组件引用一个语法
+    // 多层嵌套传值 provide 传值 inject 取值
+    const asyncCommon1 = Vue.defineAsyncComponent(() =>{
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve({
+            template: `<div>this is an async component2</div>`
+          })
+        }, 5000);
+      })
+    })
+    const app = Vue.createApp({
+      components:{
+        asyncCommon1
+      },
+      data() {
+        return {
+          currentItem: 'input-item'
+        }
+      },
+      methods: {
+        handleClick() {
+          // if(this.currentItem === 'input-item') {
+          //   this.currentItem = 'common-item'
+          // }else {
+          //   this.currentItem = 'input-item'
+          // }
+          this.currentItem = this.currentItem === 'input-item' ? 'common-item' : 'input-item'
+        }
+      },
+      template: `
+        <keep-alive> 
+          <component :is="currentItem" />          
+        </keep-alive>
+        <button @click="handleClick">切换</button>
+        <async-common />
+        <async-common1 />
+      `
+    })
+    app.component('input-item', {
+      template: `<input />`
+    })
+    app.component('common-item', {
+      template: `<div>nihao</div>`
+    })
+    app.component('async-common', Vue.defineAsyncComponent(() =>{
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve({
+            template: `<div>this is an async component</div>`
+          })
+        }, 4000);
+      })
+    }))
+    const vm = app.mount('#root')
+  </script>
+</html>

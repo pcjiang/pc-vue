@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+<script>
+  const myPlugin = {
+    install(app, options) {
+      // console.log(app, options)
+      app.provide('name', 'Mr Peng')
+      app.directive('focus', {
+        mounted(el) {
+          el.focus()
+        }
+      })
+      app.mixin({
+        mounted() {
+          console.log('mixin')
+        }
+      })
+      app.config.globalProperties.$sayHello = 'hello world'
+    }
+  }
+  const app = Vue.createApp({
+    data() {
+      return {
+      }
+    },
+    inject: ['name'],
+    template: `
+      <my-title>
+        {{name}}
+        <input v-focus />
+      </my-title>
+    `
+  })
+  app.component('my-title', {
+    mounted() {
+      console.log(this.$sayHello)
+    },
+    template: `
+      <div>
+        <slot />
+      </div>
+    `
+    // props: ['level'],
+    // render() {
+    //   const { h } = Vue
+    //   // 虚拟DOM
+    //   return h('h' + this.level, {name:'123456'}, this.$slots.default())
+    // },
+  })
+  app.use(myPlugin, { name: 'peng' })
+  const vm = app.mount('#root')
+</script>
+
+</html>

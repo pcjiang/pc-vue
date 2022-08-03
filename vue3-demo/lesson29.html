@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .header {position: relative}
+    /* .test {
+      position: fixed;
+      top: 20px;
+      background-color: #666;
+    } */
+  </style>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+  <script>
+    // 自定义指令 directive
+    // 局部组件
+    // const directive = {
+    //   focus: {
+    //     mounted(el) {
+    //       el.focus()
+    //     }        
+    //   }
+    // }
+    const app = Vue.createApp({
+      // directives,
+      data() {
+        return {
+          canRun: true,
+          distance: 50
+        }
+      },
+      methods: {
+        handleClick() {
+          console.log('handleClick')
+          console.log(!this.canRun)
+        }
+      },
+      template: `
+        <input v-focus />
+        <div class="test">
+          <button @click="handleClick" v-pos:left="distance" class="header">增加</button>
+        </div>
+      `
+    })
+    // 全局指令
+    app.directive('focus', {
+      mounted(el) {
+        el.focus()
+      }
+    })
+    //简写
+    app.directive('pos', (el, binding) => {
+      el.style[binding.arg] = (binding.value + 'px')
+    })
+    // app.directive('pos', {
+    //   mounted(el, binding) {
+    //     el.style.top = (binding.value + 'px')
+    //   },
+    //   updated(el, binding) {
+    //     el.style.top = (binding.value + 'px')
+    //   }
+    // })
+    const vm = app.mount('#root')
+  </script>
+</html>
